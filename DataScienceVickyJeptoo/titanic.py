@@ -164,7 +164,11 @@ from sklearn import model_selection
 array=df.values
 X=array[:,1:8] # :means all rows from columns 0.....9
 y=array[:,0] #10 counted here
-X_train,X_test,Y_train,Y_test=model_selection.train_test_split(X,y,test_size=0.30,random_state=42)
+from imblearn.over_sampling import SMOTE
+sm=SMOTE(ratio='auto',kind='regular',random_state=42)
+X_sampled, y_sampled=sm.fit_sample(X,y)
+
+X_train,X_test,Y_train,Y_test=model_selection.train_test_split(X_sampled, y_sampled,test_size=0.30,random_state=42)
 
 #from sklearn.tree import DecisionTreeClassifier
 #object=KNeighborsClassifier() #77.61%
@@ -197,5 +201,13 @@ print(classification_report(Y_test,predictions))
 
 from sklearn.metrics import confusion_matrix
 print(confusion_matrix(Y_test,predictions))
+
+
+newpwerson = [[3,2,0,45,45,23,233]]
+observe = object.predict(newpwerson)
+print(observe)
+
+
+
 
 #reference from :https://towardsdatascience.com/predicting-the-survival-of-titanic-passengers-30870ccc7e8
